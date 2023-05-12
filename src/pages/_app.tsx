@@ -11,6 +11,7 @@ import {
 } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 //  List pages you want to be publicly accessible, or leave empty if
 //  every page requires authentication. Use this naming strategy:
@@ -29,6 +30,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   return (
     <ClerkProvider {...pageProps}>
+      <Head>
+        <title>Yet Another Twitter Clone</title>
+        <meta name="description" content="Anything else is better" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Toaster position="bottom-center" />
       {isPublicPage ? (
         <Component {...pageProps} />
