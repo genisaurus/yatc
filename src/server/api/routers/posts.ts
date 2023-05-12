@@ -73,7 +73,7 @@ export const postsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.userId;
-      const { limitSuccess } = await ratelimit.limit(authorId);
+      const { success: limitSuccess } = await ratelimit.limit(authorId);
 
       if (!limitSuccess) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
