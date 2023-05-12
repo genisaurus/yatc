@@ -3,9 +3,14 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import { useRouter } from "next/router";
-
+import { Toaster } from "react-hot-toast";
 
 //  List pages you want to be publicly accessible, or leave empty if
 //  every page requires authentication. Use this naming strategy:
@@ -23,23 +28,22 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const isPublicPage = publicPages.includes(pathname);
 
   return (
-      <ClerkProvider {...pageProps}>
-        { isPublicPage ? 
-          (<Component {...pageProps} />) :
-          (
-            <>
-              <SignedIn>
-                <Component {...pageProps} />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          )}
-      </ClerkProvider>
-    );
+    <ClerkProvider {...pageProps}>
+      <Toaster position="bottom-center" />
+      {isPublicPage ? (
+        <Component {...pageProps} />
+      ) : (
+        <>
+          <SignedIn>
+            <Component {...pageProps} />
+          </SignedIn>
+          <SignedOut>
+            <RedirectToSignIn />
+          </SignedOut>
+        </>
+      )}
+    </ClerkProvider>
+  );
 };
 
 export default api.withTRPC(MyApp);
-
-
