@@ -12,6 +12,7 @@ import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import type { Post } from "@prisma/client";
+import { createGzip } from "zlib";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
@@ -62,7 +63,19 @@ export const postsRouter = createTRPCRouter({
     return addUserDataToPosts(posts);
   }),
 
-  getPostsByUserId: publicProcedure
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!post) throw new TRPCError({ code: "NOT_FOUND" });
+
+      return (await addUserDataToPosts([post]))[0];
+    }),
+
+  getByUserId: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(({ ctx, input }) =>
       ctx.prisma.post
