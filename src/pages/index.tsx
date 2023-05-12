@@ -8,13 +8,20 @@ import type { RouterOutputs } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { LoadingPage, LoadingSpinner } from "~/components/loading";
+import { LoadingPage } from "~/components/loading";
+import { useContext, useState } from "react";
 
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
+  const [input, setInput] = useState<string>("");
   const { user } = useUser();
-  console.log("user id: %s", user?.id);
+  const ctx = api.useContext();
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+    },
+  });
 
   if (!user) return null;
 
@@ -31,7 +38,12 @@ const CreatePostWizard = () => {
       <input
         placeholder="Say something worth saying!"
         className="grow bg-transparent outline-none"
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        disabled={isPosting}
       />
+      <button onClick={() => mutate({ content: input })}>Post</button>
     </div>
   );
 };
@@ -53,7 +65,7 @@ const PostView = (props: PostWithUser) => {
           <span className="font-bold">{`@${author.username}`}</span>
           <span>{` ... ${dayjs(post.createdAt).fromNow()}`}</span>
         </div>
-        <span>{post.content}</span>
+        <span className="text-xl">{post.content}</span>
       </div>
     </div>
   );
