@@ -12,7 +12,6 @@ import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import type { Post } from "@prisma/client";
-import { createGzip } from "zlib";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
