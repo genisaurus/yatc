@@ -9,6 +9,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
 import { PostView } from "~/components/postView";
+import { generateUsername } from "~/server/helpers/usernameGenerator";
 
 const CreatePostWizard = () => {
   const [input, setInput] = useState<string>("");
@@ -84,13 +85,15 @@ const Feed = () => {
 };
 
 const Home: NextPage = () => {
-  const { isLoaded: userLoaded, isSignedIn } = useUser();
+  const { user, isLoaded: userLoaded, isSignedIn } = useUser();
 
   // start fetching ASAP to build cache
   api.posts.getAll.useQuery();
 
-  // return empty div id user isn't loaded yet
+  // return empty div if user isn't loaded yet
   if (!userLoaded) return <div />;
+  if (userLoaded && user && !user.username)
+    void user.update({ username: generateUsername(user) });
 
   return (
     <>

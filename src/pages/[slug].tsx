@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const slug = context.params?.slug;
   if (typeof slug !== "string") throw new Error("No Slug");
   const username = slug.replace("@", "");
-
+  console.log(username);
   await helpers.profile.getUserByUsername.prefetch({ username });
 
   return {
