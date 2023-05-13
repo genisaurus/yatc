@@ -1,28 +1,19 @@
-# Create T3 App
+# YATC - Yet Another Twitter Clone
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+An extremely basic twitter clone. Currently supports posting with a 280 character limit, and that's it. So the obvious TO-DOs that might come in the future (in order of the liklihood that I'll actually come back to implement them) are:
 
-## What's next? How do I make an app with this?
+- Replies
+- Likes
+- Account creation/management (currently users are authenticated and stored through Clerk)
+- Follows and personalized feeds
+- Embedded media
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+This is a [T3 Stack](https://create.t3.gg/) project, so it uses the following tools:
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- [Clerk](https://https://clerk.com/) handles authentication, which is exclusively OAuth for now. Also a user store. Uses the following providers:
+  - Github
+  - Google
+- [Prisma](https://prisma.io) as an ORM, the datastore is provided by [Planetscale](https://planetscale.com/), a servless MySQL platform.
+- [Tailwind CSS](https://tailwindcss.com) for styling
+- [tRPC](https://trpc.io) for a typesafe API
